@@ -214,11 +214,16 @@ async function loadProductsFromSupabase() {
     return;
   }
 
-  products = (data || []).map(p => ({
+  if (data && data.length > 0) {
+  products = data.map(p => ({
     ...p,
     price: Number(p.price),
     stock: Number(p.stock)
   }));
+  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+} else {
+  loadProducts();
+}
 
   renderProducts();
   renderCart();
