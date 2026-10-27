@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+<title>CHVT13.COM — Adega do CH</title>
+<style>
+:root{--bg:#0b0b0d;--panel:#171719;--panel2:#202024;--red:#e32636;--red2:#b91525;--white:#f7f7f7;--muted:#b7b7bd;--line:#34343a;--green:#20a464}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:12px 15px;font-weight:700}
+a{color:#ff727c}
+header{background:#111;border-bottom:3px solid var(--red);padding:17px 16px;position:sticky;top:0;z-index:5}
+.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-weight:900;font-size:clamp(22px,5vw,30px);letter-spacing:1px}.brand span{color:var(--red)}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-primary{background:var(--red);color:white}.btn-primary:hover{background:var(--red2)}
+.btn-dark{background:var(--panel2);color:white;border:1px solid var(--line)}
+.btn-light{background:#f2f2f2;color:#111}.btn-danger{background:#6f111b;color:white}
+main{max-width:1100px;margin:0 auto;padding:22px 15px 55px}
+.hero{background:linear-gradient(135deg,#241014,#121214 65%);border:1px solid #4a2026;border-radius:18px;padding:27px 22px;margin-bottom:22px}
+.hero h1{font-size:clamp(28px,7vw,42px);margin:0 0 10px}.hero p{color:var(--muted);line-height:1.5;margin:0 0 18px}
+.toolbar{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:18px}
+input,select,textarea{width:100%;background:#101012;border:1px solid #44444b;color:white;border-radius:10px;padding:12px}
+input::placeholder,textarea::placeholder{color:#9999a2}
+.filters{display:grid;grid-template-columns:1fr;gap:10px}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:22px 0 14px}
+.section-title h2{margin:0;font-size:23px}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;min-width:0}
+.product .emoji{height:76px;display:grid;place-items:center;font-size:43px;background:#222226;border-radius:10px;margin-bottom:12px}
+.product h3{margin:0 0 7px;font-size:16px;overflow-wrap:anywhere}.category{color:var(--muted);font-size:12px;margin-bottom:8px}
+.price{font-weight:900;font-size:20px;color:#ff6672;margin-top:auto;padding:8px 0}
+.stock{font-size:12px;color:var(--muted);margin-bottom:10px}
+.product button{width:100%}
+.empty{padding:28px;text-align:center;border:1px dashed #494950;border-radius:12px;color:var(--muted);grid-column:1/-1}
+.cart-box,.admin-box,.login-box,.stat{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;margin-top:20px}
+.cart-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}
+.qty-controls{display:flex;align-items:center;gap:8px}.qty-controls button{padding:6px 11px;background:#303036;color:white}
+.total{font-size:22px;font-weight:900;text-align:right;margin:15px 0}
+.cart-actions{display:grid;grid-template-columns:1fr;gap:8px}
+footer{text-align:center;color:#888;padding:24px 12px;border-top:1px solid var(--line);font-size:13px}
+.hidden{display:none!important}
+.admin-tabs{display:flex;gap:8px;overflow-x:auto;padding:3px 0 12px}
+.admin-tabs button{white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.stat strong{display:block;font-size:25px;margin-top:8px}
+.form-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.admin-list{display:grid;gap:10px;margin-top:14px}
+.admin-item{border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.admin-item .details{flex:1;min-width:130px}.admin-item small{display:block;color:var(--muted);margin-top:5px}
+.admin-item .actions{display:flex;gap:6px;flex-wrap:wrap}.admin-item .actions button{padding:8px 10px}
+.notice{background:#241c0c;border:1px solid #655022;border-radius:10px;padding:12px;color:#ffe3a0;line-height:1.5;margin:12px 0}
+.success{color:#7fe3ad}.muted{color:var(--muted)}.small{font-size:13px}
+@media(min-width:650px){main{padding-top:28px}.toolbar{grid-template-columns:1.5fr 1fr}.filters{grid-template-columns:1fr 1fr}.products{grid-template-columns:repeat(3,minmax(0,1fr))}.cart-actions{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr 1fr}.form-grid .full{grid-column:1/-1}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(min-width:900px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">CHVT13<span>.COM</span></div>
+    <div class="header-actions">
+      <button class="btn-primary" id="showStoreBtn" onclick="showView('store')">Ver loja</button>
+      <button class="btn-dark" id="showAdminBtn" onclick="showView('login')">Painel administrativo</button>
+    </div>
+  </div>
+</header>
+<main>
+  <section id="storeView">
+    <div class="hero">
+      <h1 id="storeTitle">Adega do CH</h1>
+      <p>Seu pedido com praticidade. Escolha os produtos, confira o carrinho e envie seu pedido pelo WhatsApp.</p>
+      <button class="btn-primary" onclick="document.getElementById('produtosArea').scrollIntoView({behavior:'smooth'})">Ver produtos</button>
+    </div>
+    <div class="toolbar">
+      <input id="searchInput" type="search" placeholder="Buscar produto..." oninput="renderProducts()">
+      <div class="filters">
+        <select id="categoryFilter" onchange="renderProducts()"><option value="">Todas as categorias</option></select>
+        <select id="sortFilter" onchange="renderProducts()"><option value="default">Ordenar produtos</option><option value="priceAsc">Menor preço</option><option value="priceDesc">Maior preço</option><option value="name">Nome A–Z</option></select>
+      </div>
+    </div>
+    <div class="section-title" id="produtosArea"><h2>Produtos disponíveis</h2><span class="muted small" id="productCount"></span></div>
+    <div id="productGrid" class="products"></div>
+    <section class="cart-box" id="cartArea">
+      <div class="section-title"><h2>🛒 Meu carrinho</h2><span class="muted small" id="cartCount">0 itens</span></div>
+      <div id="cartItems"></div>
+      <div class="total" id="cartTotal">Total: R$ 0,00</div>
+      <div class="cart-actions">
+        <button class="btn-primary" onclick="checkoutWhatsApp()">Enviar pedido pelo WhatsApp</button>
+        <button class="btn-dark" onclick="clearCart()">Limpar carrinho</button>
+      </div>
+      <p class="muted small">O pedido só será enviado depois que você confirmar a mensagem no WhatsApp.</p>
+    </section>
+  </section>
+
+  <section id="loginView" class="hidden">
+    <div class="login-box">
+      <h1>Entrar no painel</h1>
+      <p class="muted">Área de demonstração para administrar os produtos e as informações da loja.</p>
+      <form onsubmit="login(event)">
+        <label for="loginId">ID de acesso</label><input id="loginId" inputmode="numeric" autocomplete="username" required placeholder="Digite seu ID">
+        <label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Digite sua senha" style="margin-bottom:12px">
+        <button class="btn-primary" type="submit">Entrar</button>
+        <button class="btn-dark" type="button" onclick="showView('store')" style="margin-left:6px">Voltar à loja</button>
+      </form>
+      <p id="loginError" class="small" style="color:#ff7c85"></p>
+      <div class="notice small">Demonstração: ID <strong>77155106</strong> e senha <strong>0406</strong>. Estes dados estão visíveis no código e não são seguros para um site comercial real.</div>
+      <p class="small">Precisa de cadastro? <a id="registerLink" href="#" target="_blank" rel="noopener">Solicitar cadastro pelo WhatsApp</a></p>
+    </div>
+  </section>
+
+  <section id="adminView" class="hidden">
+    <div class="section-title"><h1>Painel administrativo</h1><button class="btn-dark" onclick="logout()">Sair</button></div>
+    <p class="muted">Gerencie os produtos desta demonstração. As alterações ficam salvas neste navegador.</p>
+    <div class="admin-tabs">
+      <button class="btn-primary" onclick="showAdminTab('overview')">Visão geral</button>
+      <button class="btn-dark" onclick="showAdminTab('products')">Meus produtos</button>
+      <button class="btn-dark" onclick="showAdminTab('orders')">Meus pedidos</button>
+      <button class="btn-dark" onclick="showAdminTab('settings')">Configurações da loja</button>
+    </div>
+    <div id="adminOverview" class="admin-box">
+      <h2>Visão geral</h2>
+      <div class="stats">
+        <div class="stat">Produtos cadastrados<strong id="statProducts">0</strong></div>
+        <div class="stat">Itens em estoque<strong id="statStock">0</strong></div>
+        <div class="stat">Itens no carrinho<strong id="statCart">0</strong></div>
+        <div class="stat">Valor do carrinho<strong id="statTotal">R$ 0,00</strong></div>
+      </div>
+    </div>
+    <div id="adminProducts" class="admin-box hidden">
+      <h2 id="productFormTitle">Cadastrar produto</h2>
+      <form id="productForm" onsubmit="saveProduct(event)">
+        <input id="editProductId" type="hidden">
+        <div class="form-grid">
+          <div><label for="productName">Nome do produto *</label><input id="productName" required placeholder="Ex.: Refrigerante 2L"></div>
+          <div><label for="productPrice">Preço (R$) *</label><input id="productPrice" type="number" min="0.01" step="0.01" required placeholder="Ex.: 9.99"></div>
+          <div><label for="productCategory">Categoria</label><input id="productCategory" placeholder="Ex.: Bebidas"></div>
+          <div><label for="productStock">Estoque</label><input id="productStock" type="number" min="0" step="1" value="10"></div>
+          <div><label for="productEmoji">Emoji/imagem simples</label><input id="productEmoji" maxlength="8" placeholder="🥤"></div>
+          <div class="full"><label for="productDescription">Descrição (opcional)</label><textarea id="productDescription" rows="2" placeholder="Detalhes do produto"></textarea></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn-primary" type="submit">Salvar produto</button><button class="btn-dark" type="button" onclick="resetProductForm()">Cancelar edição</button></div>
+      </form>
+      <h3>Produtos cadastrados</h3><div id="adminProductList" class="admin-list"></div>
+    </div>
+    <div id="adminOrders" class="admin-box hidden">
+      <h2>Meus pedidos</h2>
+      <p class="muted">Nesta versão, os pedidos são finalizados no WhatsApp e não ficam registrados automaticamente no painel.</p>
+      <div class="notice">Para registrar pedidos, estoque compartilhado e várias adegas com contas independentes, será necessário conectar um banco de dados e autenticação seguros.</div>
+    </div>
+    <div id="adminSettings" class="admin-box hidden">
+      <h2>Configurações da loja</h2>
+      <form onsubmit="saveSettings(event)">
+        <label for="settingStoreName">Nome da loja</label><input id="settingStoreName" required>
+        <label for="settingWhatsApp">WhatsApp da loja (com código do país, só números)</label><input id="settingWhatsApp" inputmode="numeric" placeholder="5511999999999" required>
+        <button class="btn-primary" type="submit" style="margin-top:12px">Salvar configurações</button>
+      </form>
+      <p id="settingsMessage" class="success small"></p>
+      <div class="notice">As configurações ficam apenas neste navegador. Não são sincronizadas entre celulares nem entre diferentes donos de adega.</div>
+    </div>
+  </section>
+</main>
+<footer>CHVT13.COM — Adega do CH · Projeto em desenvolvimento</footer>
+<script>
+const DEMO_ID = "77155106";
+const DEMO_PASSWORD = "0406";
+const STORE_KEY = "chvt13_produtos_v1";
+const CONFIG_KEY = "chvt13_config_v1";
+const seedProducts = [
+ {id:"p1",name:"Refrigerante",price:8.00,category:"Bebidas",stock:20,emoji:"🥤",description:"Refrigerante gelado."},
+ {id:"p2",name:"Água mineral",price:3.00,category:"Bebidas",stock:24,emoji:"💧",description:"Água mineral."},
+ {id:"p3",name:"Chocolate",price:5.00,category:"Doces",stock:12,emoji:"🍫",description:"Chocolate."},
+ {id:"p4",name:"Gelo",price:8.00,category:"Diversos",stock:15,emoji:"🧊",description:"Pacote de gelo."}
+];
+let products = loadProducts();
+let config = loadConfig();
+let cart = {};
+let editing = false;
+let loggedIn = false;
+function loadProducts(){try{const x=JSON.parse(localStorage.getItem(STORE_KEY));return Array.isArray(x)?x:seedProducts.map(p=>({...p}));}catch(e){return seedProducts.map(p=>({...p}));}}
+function loadConfig(){try{return {...{storeName:"Adega do CH",whatsapp:"5511959054516"},...(JSON.parse(localStorage.getItem(CONFIG_KEY))||{})};}catch(e){return {storeName:"Adega do CH",whatsapp:"5511959054516"};}}
+function saveProducts(){localStorage.setItem(STORE_KEY,JSON.stringify(products));}
+function saveConfig(){localStorage.setItem(CONFIG_KEY,JSON.stringify(config));}
+function money(n){return Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function showView(view){
+ document.getElementById("storeView").classList.toggle("hidden",view!=="store");
+ document.getElementById("loginView").classList.toggle("hidden",view!=="login");
+ document.getElementById("adminView").classList.toggle("hidden",view!=="admin");
+ if(view==="admin"&&!loggedIn){view="login";document.getElementById("storeView").classList.add("hidden");document.getElementById("loginView").classList.remove("hidden");document.getElementById("adminView").classList.add("hidden");}
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+function renderHeader(){document.getElementById("storeTitle").textContent=config.storeName||"Adega do CH";document.title="CHVT13.COM — "+(config.storeName||"Adega do CH");document.getElementById("registerLink").href="https://wa.me/5511959054516?text="+encodeURIComponent("Olá! Quero solicitar cadastro para administrar uma adega no CHVT13.COM.");}
+function renderCategories(){
+ const sel=document.getElementById("categoryFilter"),old=sel.value;
+ const cats=[...new Set(products.map(p=>p.category||"Diversos"))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
+ sel.innerHTML='<option value="">Todas as categorias</option>'+cats.map(c=>'<option value="'+escapeHtml(c)+'">'+escapeHtml(c)+'</option>').join("");
+ if(cats.includes(old))sel.value=old;
+}
+function renderProducts(){
+ renderCategories();
+ let list=products.filter(p=>Number(p.stock)>0);
+ const q=document.getElementById("searchInput").value.trim().toLowerCase();
+ const cat=document.getElementById("categoryFilter").value;
+ if(q)list=list.filter(p=>(p.name+" "+p.category+" "+(p.description||"")).toLowerCase().includes(q));
+ if(cat)list=list.filter(p=>(p.category||"Diversos")===cat);
+ const sort=document.getElementById("sortFilter").value;
+ if(sort==="priceAsc")list.sort((a,b)=>a.price-b.price);
+ if(sort==="priceDesc")list.sort((a,b)=>b.price-a.price);
+ if(sort==="name")list.sort((a,b)=>a.name.localeCompare(b.name,"pt-BR"));
+ document.getElementById("productCount").textContent=list.length+" produto(s)";
+ const grid=document.getElementById("productGrid");
+ if(!list.length){grid.innerHTML='<div class="empty">Nenhum produto encontrado. Tente outra busca ou cadastre produtos no painel.</div>';return;}
+ grid.innerHTML=list.map(p=>`<article class="product"><div class="emoji">${escapeHtml(p.emoji||"🛍️")}</div><h3>${escapeHtml(p.name)}</h3><div class="category">${escapeHtml(p.category||"Diversos")}</div>${p.description?`<p class="muted small">${escapeHtml(p.description)}</p>`:""}<div class="price">${money(p.price)}</div><div class="stock">Estoque: ${Number(p.stock)||0}</div><button class="btn-primary" onclick="addToCart('${p.id}')">Adicionar ao carrinho</button></article>`).join("");
+}
+function addToCart(id){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ const qty=cart[id]||0;if(qty>=Number(p.stock)){alert("Não há mais unidades disponíveis no estoque.");return;}
+ cart[id]=qty+1;renderCart();renderStats();
+}
+function changeQty(id,delta){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ const next=(cart[id]||0)+delta;
+ if(next<=0)delete cart[id];else if(next<=Number(p.stock))cart[id]=next;else alert("Quantidade maior que o estoque disponível.");
+ renderCart();renderStats();
+}
+function cartEntries(){return Object.entries(cart).map(([id,qty])=>({p:products.find(p=>p.id===id),qty})).filter(x=>x.p&&x.qty>0);}
+function cartTotal(){return cartEntries().reduce((s,x)=>s+x.p.price*x.qty,0);}
+function renderCart(){
+ const entries=cartEntries(),count=entries.reduce((s,x)=>s+x.qty,0);
+ document.getElementById("cartCount").textContent=count+" item(ns)";
+ document.getElementById("cartTotal").textContent="Total: "+money(cartTotal());
+ const box=document.getElementById("cartItems");
+ if(!entries.length){box.innerHTML='<p class="muted">Seu carrinho está vazio. Adicione produtos para começar.</p>';return;}
+ box.innerHTML=entries.map(({p,qty})=>`<div class="cart-row"><div><strong>${escapeHtml(p.name)}</strong><div class="muted small">${money(p.price)} cada · ${money(p.price*qty)}</div></div><div class="qty-controls"><button aria-label="Diminuir" onclick="changeQty('${p.id}',-1)">−</button><strong>${qty}</strong><button aria-label="Aumentar" onclick="changeQty('${p.id}',1)">+</button></div></div>`).join("");
+}
+function clearCart(){cart={};renderCart();renderStats();}
+function checkoutWhatsApp(){
+ const entries=cartEntries();if(!entries.length){alert("Adicione pelo menos um produto ao carrinho.");return;}
+ const phone=String(config.whatsapp||"").replace(/\D/g,"");if(phone.length<10){alert("Configure um número de WhatsApp válido no painel.");return;}
+ const lines=["Olá! Quero fazer um pedido na "+(config.storeName||"Adega do CH")+":","",...entries.map(({p,qty})=>`${qty} x ${p.name} — ${money(p.price*qty)}`),"",`Total: ${money(cartTotal())}`,"","Por favor, confirme a disponibilidade e a entrega."];
+ window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener");
+}
+function login(e){e.preventDefault();const id=document.getElementById("loginId").value.trim(),pass=document.getElementById("loginPassword").value;
+ if(id===DEMO_ID&&pass===DEMO_PASSWORD){loggedIn=true;document.getElementById("loginError").textContent="";showView("admin");showAdminTab("overview");renderAdmin();}else document.getElementById("loginError").textContent="ID ou senha incorretos. Confira os dados de demonstração.";}
+function logout(){loggedIn=false;showView("store");}
+function showAdminTab(tab){
+ if(!loggedIn){showView("login");return;}
+ ["overview","products","orders","settings"].forEach(t=>document.getElementById("admin"+t[0].toUpperCase()+t.slice(1)).classList.toggle("hidden",t!==tab));
+ if(tab==="products")renderAdminProducts();
+ if(tab==="settings"){document.getElementById("settingStoreName").value=config.storeName||"";document.getElementById("settingWhatsApp").value=config.whatsapp||"";}
+ renderStats();
+}
+function renderAdmin(){renderAdminProducts();renderStats();renderHeader();}
+function renderStats(){
+ const stock=products.reduce((s,p)=>s+(Number(p.stock)||0),0),qty=cartEntries().reduce((s,x)=>s+x.qty,0);
+ document.getElementById("statProducts").textContent=products.length;
+ document.getElementById("statStock").textContent=stock;
+ document.getElementById("statCart").textContent=qty;
+ document.getElementById("statTotal").textContent=money(cartTotal());
+}
+function saveProduct(e){
+ e.preventDefault();
+ const id=document.getElementById("editProductId").value;
+ const name=document.getElementById("productName").value.trim(),price=Number(document.getElementById("productPrice").value);
+ const category=document.getElementById("productCategory").value.trim()||"Diversos",stock=Math.max(0,Number(document.getElementById("productStock").value)||0);
+ const emoji=document.getElementById("productEmoji").value.trim()||"🛍️",description=document.getElementById("productDescription").value.trim();
+ if(!name||!Number.isFinite(price)||price<=0){alert("Informe nome e preço válido.");return;}
+ const item={id:id||("p"+Date.now()),name,price,category,stock,emoji,description};
+ if(id)products=products.map(p=>p.id===id?item:p);else products.push(item);
+ saveProducts();resetProductForm();renderProducts();renderAdminProducts();renderStats();alert(id?"Produto atualizado!":"Produto cadastrado!");
+}
+function editProduct(id){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ document.getElementById("editProductId").value=p.id;document.getElementById("productName").value=p.name;
+ document.getElementById("productPrice").value=p.price;document.getElementById("productCategory").value=p.category||"";
+ document.getElementById("productStock").value=p.stock;document.getElementById("productEmoji").value=p.emoji||"";
+ document.getElementById("productDescription").value=p.description||"";
+ document.getElementById("productFormTitle").textContent="Editar produto";document.getElementById("productFormTitle").scrollIntoView({behavior:"smooth"});
+}
+function deleteProduct(id){
+ const p=products.find(x=>x.id===id);if(!p)return;
+ if(!confirm("Excluir "+p.name+"?"))return;
+ products=products.filter(x=>x.id!==id);delete cart[id];saveProducts();renderProducts();renderCart();renderAdminProducts();renderStats();
+}
+function resetProductForm(){document.getElementById("productForm").reset();document.getElementById("editProductId").value="";document.getElementById("productStock").value=10;document.getElementById("productFormTitle").textContent="Cadastrar produto";}
+function renderAdminProducts(){
+ const box=document.getElementById("adminProductList");
+ if(!products.length){box.innerHTML='<div class="empty">Nenhum produto cadastrado.</div>';return;}
+ box.innerHTML=products.map(p=>`<div class="admin-item"><div class="details"><strong>${escapeHtml(p.emoji||"🛍️")} ${escapeHtml(p.name)}</strong><small>${money(p.price)} · ${escapeHtml(p.category||"Diversos")} · Estoque: ${Number(p.stock)||0}</small></div><div class="actions"><button class="btn-dark" onclick="editProduct('${p.id}')">Editar</button><button class="btn-danger" onclick="deleteProduct('${p.id}')">Excluir</button></div></div>`).join("");
+}
+function saveSettings(e){
+ e.preventDefault();const name=document.getElementById("settingStoreName").value.trim(),phone=document.getElementById("settingWhatsApp").value.replace(/\D/g,"");
+ if(!name||phone.length<10){alert("Informe o nome da loja e um WhatsApp válido com código do país.");return;}
+ config={...config,storeName:name,whatsapp:phone};saveConfig();renderHeader();document.getElementById("settingsMessage").textContent="Configurações salvas neste navegador.";alert("Configurações salvas!");
+}
+renderHeader();renderProducts();renderCart();renderStats();
+</script>
+</body>
+</html>
