@@ -196,7 +196,21 @@ let config = loadConfig();
 let cart = {};
 let editing = false;
 let loggedIn = false;
-function loadProducts(){try{const x=JSON.parse(localStorage.getItem(STORE_KEY));return Array.isArray(x)?x:seedProducts.map(p=>({...p}));}catch(e){return seedProducts.map(p=>({...p}));}}
+
+function loadProducts(){
+  try {
+    const x = JSON.parse(localStorage.getItem(STORE_KEY));
+
+    if (Array.isArray(x) && x.length > 0) {
+      return x;
+    }
+
+    return seedProducts.map(p => ({...p}));
+  } catch(e) {
+    return seedProducts.map(p => ({...p}));
+  }
+}
+
 function loadConfig(){try{return {...{storeName:"Adega do CH",whatsapp:"5511959054516"},...(JSON.parse(localStorage.getItem(CONFIG_KEY))||{})};}catch(e){return {storeName:"Adega do CH",whatsapp:"5511959054516"};}}
 function saveProducts(){localStorage.setItem(STORE_KEY,JSON.stringify(products));}
 function saveConfig(){localStorage.setItem(CONFIG_KEY,JSON.stringify(config));}
