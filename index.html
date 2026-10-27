@@ -200,6 +200,35 @@ function loadProducts(){try{const x=JSON.parse(localStorage.getItem(STORE_KEY));
 function loadConfig(){try{return {...{storeName:"Adega do CH",whatsapp:"5511959054516"},...(JSON.parse(localStorage.getItem(CONFIG_KEY))||{})};}catch(e){return {storeName:"Adega do CH",whatsapp:"5511959054516"};}}
 function saveProducts(){localStorage.setItem(STORE_KEY,JSON.stringify(products));}
 function saveConfig(){localStorage.setItem(CONFIG_KEY,JSON.stringify(config));}
+
+async function loadProductsFromSupabase() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("id, store_id, name, description, category, price, stock, emoji")
+    .eq("store_id", STORE_ID)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Erro ao carregar produtos:", error);
+    alert("Não foi possível carregar os produtos do banco de dados.");
+    return;
+  }
+
+  products = (data || []).map(p => ({
+    ...p,
+    price: Number(p.price),
+    stock: Number(p.stock)
+  }));
+
+  renderProducts();
+  renderCart();
+  renderStats();
+
+  if (loggedIn) {
+    renderAdminProducts();
+  }
+}
+
 function money(n){return Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
 function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function showView(view){
@@ -345,6 +374,7 @@ function saveSettings(e){
  config={...config,storeName:name,whatsapp:phone};saveConfig();renderHeader();document.getElementById("settingsMessage").textContent="Configurações salvas neste navegador.";alert("Configurações salvas!");
 }
 renderHeader();renderProducts();renderCart();renderStats();
+loadProductsFromSupabase();
 </script>
 </body>
 </html>
