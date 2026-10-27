@@ -224,6 +224,7 @@ async function loadProductsFromSupabase() {
 
   if (error) {
     console.error("Erro ao carregar produtos:", error);
+    alert("Erro Supabase: " + error.message);
     alert("Não foi possível carregar os produtos do banco de dados.");
     return;
   }
