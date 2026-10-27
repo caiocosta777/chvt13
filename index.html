@@ -101,13 +101,17 @@ footer{text-align:center;color:#888;padding:24px 12px;border-top:1px solid var(-
       <h1>Entrar no painel</h1>
       <p class="muted">Área de demonstração para administrar os produtos e as informações da loja.</p>
       <form onsubmit="login(event)">
-        <label for="loginId">ID de acesso</label><input id="loginId" inputmode="numeric" autocomplete="username" required placeholder="Digite seu ID">
-        <label for="loginPassword">Senha</label><input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Digite sua senha" style="margin-bottom:12px">
+        
+<label for="loginEmail">E-mail</label>
+<input id="loginEmail" type="email" autocomplete="username" required placeholder="Digite seu e-mail">
+
+<label for="loginPassword">Senha</label>
+<input id="loginPassword" type="password" autocomplete="current-password" required placeholder="Digite sua senha" style="margin-bottom:12px">
+
         <button class="btn-primary" type="submit">Entrar</button>
         <button class="btn-dark" type="button" onclick="showView('store')" style="margin-left:6px">Voltar à loja</button>
       </form>
       <p id="loginError" class="small" style="color:#ff7c85"></p>
-      <div class="notice small">Demonstração: ID <strong>77155106</strong> e senha <strong>0406</strong>. Estes dados estão visíveis no código e não são seguros para um site comercial real.</div>
       <p class="small">Precisa de cadastro? <a id="registerLink" href="#" target="_blank" rel="noopener">Solicitar cadastro pelo WhatsApp</a></p>
     </div>
   </section>
@@ -254,9 +258,40 @@ function checkoutWhatsApp(){
  const lines=["Olá! Quero fazer um pedido na "+(config.storeName||"Adega do CH")+":","",...entries.map(({p,qty})=>`${qty} x ${p.name} — ${money(p.price*qty)}`),"",`Total: ${money(cartTotal())}`,"","Por favor, confirme a disponibilidade e a entrega."];
  window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(lines.join("\n")),"_blank","noopener");
 }
-function login(e){e.preventDefault();const id=document.getElementById("loginId").value.trim(),pass=document.getElementById("loginPassword").value;
- if(id===DEMO_ID&&pass===DEMO_PASSWORD){loggedIn=true;document.getElementById("loginError").textContent="";showView("admin");showAdminTab("overview");renderAdmin();}else document.getElementById("loginError").textContent="ID ou senha incorretos. Confira os dados de demonstração.";}
-function logout(){loggedIn=false;showView("store");}
+
+async function login(e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  const errorBox = document.getElementById("loginError");
+
+  errorBox.textContent = "Verificando acesso...";
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email: email,
+    password: password
+  });
+
+  if (error) {
+    errorBox.textContent = "Não foi possível entrar. Confira seu e-mail e senha.";
+    return;
+  }
+
+  loggedIn = true;
+  errorBox.textContent = "";
+  showView("admin");
+  showAdminTab("overview");
+  renderAdmin();
+}
+
+
+async function logout() {
+  await supabaseClient.auth.signOut();
+  loggedIn = false;
+  showView("store");
+}
+
 function showAdminTab(tab){
  if(!loggedIn){showView("login");return;}
  ["overview","products","orders","settings"].forEach(t=>document.getElementById("admin"+t[0].toUpperCase()+t.slice(1)).classList.toggle("hidden",t!==tab));
