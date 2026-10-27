@@ -164,8 +164,18 @@ footer{text-align:center;color:#888;padding:24px 12px;border-top:1px solid var(-
   </section>
 </main>
 <footer>CHVT13.COM — Adega do CH · Projeto em desenvolvimento</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+const SUPABASE_URL = "https://aupridqoliifttqbrhks.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_erzQk2LGoyqDnkN-ed421w_aZfNhsYL";
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
+
 const DEMO_ID = "77155106";
+
 const DEMO_PASSWORD = "0406";
 const STORE_KEY = "chvt13_produtos_v1";
 const CONFIG_KEY = "chvt13_config_v1";
